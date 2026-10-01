@@ -6,5 +6,5 @@ export const puzzles: Puzzle[] = [
   { id: "minutes-crimes", order: 3, title: "Minutes Crimes", shortDescription: "Une archive audio attend d’être écoutée.", introduction: "", fragmentId: 3, demoAnswer: "DIEPPE" },
   { id: "off-screen-map", order: 4, title: "Hors écran", shortDescription: "Des fragments ont été dissimulés dans votre environnement.", introduction: "", fragmentId: 4, demoAnswer: "SKYNET" },
   { id: "electrical-failure", order: 5, title: "Panne générale", shortDescription: "Un réseau électrique instable demande une intervention.", introduction: "", fragmentId: 5 },
-  { id: "puzzle-06", order: 6, title: "Fragment absent", shortDescription: "Cette énigme sera ajoutée ultérieurement.", introduction: "", fragmentId: 6 },
+  { id: "timeline-reconstruction", order: 6, title: "Reconstitution", shortDescription: "Six pièces à conviction doivent retrouver leur ordre.", introduction: "", fragmentId: 6 },
 ];
