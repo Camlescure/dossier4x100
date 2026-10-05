@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { isRestoredTimeline, timelineEvidence } from "@/games/puzzles/timelineEvidence.mjs";
+import { isRestoredTimeline, shuffledTimelineEvidence, timelineEvidence } from "@/games/puzzles/timelineEvidence.mjs";
 
 type Evidence = (typeof timelineEvidence)[number];
 
@@ -10,7 +10,7 @@ export function TimelinePuzzle({ onBack, onSolved }: { onBack: () => void; onSol
   const [slots, setSlots] = useState<(string | null)[]>(Array(6).fill(null)), [selectedId, setSelectedId] = useState<string | null>(null), [status, setStatus] = useState<"idle" | "incorrect" | "stable">("idle"), [unavailableImages, setUnavailableImages] = useState<string[]>([]);
   const completionLocked = useRef(false);
   const selected = timelineEvidence.find((item) => item.id === selectedId);
-  const unplaced = timelineEvidence.filter((item) => !slots.includes(item.id));
+  const unplaced = shuffledTimelineEvidence.filter((item) => !slots.includes(item.id));
   const markImageUnavailable = (id: string) => setUnavailableImages((previous) => previous.includes(id) ? previous : [...previous, id]);
   const placeInSlot = (slotIndex: number) => {
     if (!selectedId || completionLocked.current) return;

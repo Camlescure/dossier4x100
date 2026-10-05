@@ -9,6 +9,16 @@ export const timelineEvidence = [
 
 export const restoredTimeline = timelineEvidence.map((evidence) => evidence.id);
 
+// Ordre de consultation dans les archives : volontairement différent de la chronologie.
+export const shuffledTimelineEvidence = [
+  timelineEvidence[4],
+  timelineEvidence[0],
+  timelineEvidence[5],
+  timelineEvidence[1],
+  timelineEvidence[3],
+  timelineEvidence[2],
+];
+
 export function isRestoredTimeline(placement) {
   return placement.length === restoredTimeline.length && placement.every((id, index) => id === restoredTimeline[index]);
 }

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { allElectricalConfigurations, isStableElectricalConfiguration } from "../lib/electricalPuzzle.mjs";
-import { isRestoredTimeline, restoredTimeline } from "../games/puzzles/timelineEvidence.mjs";
+import { isRestoredTimeline, restoredTimeline, shuffledTimelineEvidence } from "../games/puzzles/timelineEvidence.mjs";
 import { finalPhotoLayout, fragmentPhotoPositions } from "../lib/finalFragments.mjs";
 
 test("la configuration stable est unique parmi les 64 possibilités", () => {
@@ -13,6 +13,12 @@ test("la configuration stable est unique parmi les 64 possibilités", () => {
 test("la chronologie ne valide que l’ordre attendu", () => {
   assert.equal(isRestoredTimeline(restoredTimeline), true);
   assert.equal(isRestoredTimeline([...restoredTimeline].reverse()), false);
+});
+
+test("les archives de la chronologie sont affichées dans un ordre mélangé", () => {
+  const shuffledIds = shuffledTimelineEvidence.map((evidence) => evidence.id);
+  assert.notDeepEqual(shuffledIds, restoredTimeline);
+  assert.deepEqual([...shuffledIds].sort(), [...restoredTimeline].sort());
 });
 
 test("les fragments couvrent les six zones de la photo finale", () => {
