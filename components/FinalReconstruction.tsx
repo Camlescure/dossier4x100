@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { finalPhotoLayout, finalPhotoSource } from "@/lib/finalFragments.mjs";
 import { PhotoFragment } from "@/components/PhotoFragment";
+import { assetPath } from "@/lib/assetPath";
 
 export function FinalReconstruction({ animate, onClose }: { animate: boolean; onClose: () => void }) {
   const [assembled, setAssembled] = useState(!animate);
@@ -12,6 +13,7 @@ export function FinalReconstruction({ animate, onClose }: { animate: boolean; on
   const [readyToReveal, setReadyToReveal] = useState(!animate);
   const [available, setAvailable] = useState<boolean | null>(null);
   const [photoRatio, setPhotoRatio] = useState(4 / 3);
+  const resolvedPhotoSource = assetPath(finalPhotoSource);
 
   useEffect(() => {
     const image = new window.Image();
@@ -20,8 +22,8 @@ export function FinalReconstruction({ animate, onClose }: { animate: boolean; on
       setAvailable(true);
     };
     image.onerror = () => setAvailable(false);
-    image.src = finalPhotoSource;
-  }, []);
+    image.src = resolvedPhotoSource;
+  }, [resolvedPhotoSource]);
 
   useEffect(() => {
     if (!animate) return;
@@ -47,5 +49,5 @@ export function FinalReconstruction({ animate, onClose }: { animate: boolean; on
     setReadyToReveal(true);
   };
 
-  return <div className="finale-screen fade"><header className="finale-header"><button onClick={onClose}>← Progression</button><span>ARCHIVE / 04.100</span></header><div className="finale-content"><p className="eyebrow final-phase">{phase}</p><p className="reconstruction-status"><i aria-hidden="true"/>{status}</p><span className="sr-only" aria-live="polite">{readyToReveal ? "Dossier reconstitué. Le message peut être révélé." : ""}</span><div className={`final-photo-stage ${assembled ? "assembled" : ""} ${cleanPhoto ? "clean" : ""} ${flipped ? "flipped" : ""} ${!cleanPhoto ? "reconstructing" : ""}`} style={{ aspectRatio: photoRatio }}><div className="photo-card"><div className="photo-face photo-front"><div className="assembly-grid">{finalPhotoLayout.map((fragmentId, index) => <PhotoFragment key={fragmentId} fragmentId={fragmentId} variant="assembly" className={`assembly-piece piece-${index + 1}`}/>)}</div><div className="reconstruction-scan" aria-hidden="true"/>{cleanPhoto && (available === false ? <div className="final-photo-placeholder">PHOTO FINALE</div> : <Image src={finalPhotoSource} alt="Photo finale reconstituée" width={1200} height={800} unoptimized onError={() => setAvailable(false)}/>)}</div><div className="photo-face photo-back"><p>Tu es arrivé au bout du dossier.<br/><br/>Mais il reste une dernière chose à trouver.<br/><br/>Ton cadeau t’attend sous le canapé.</p></div></div></div>{animate && !readyToReveal && <button className="skip-reconstruction" onClick={finishImmediately}>Passer l’animation</button>}{readyToReveal && <button className="return-photo" onClick={() => setFlipped((previous) => !previous)}>{flipped ? "Voir la photo" : "Révéler le message"}</button>}</div></div>;
+  return <div className="finale-screen fade"><header className="finale-header"><button onClick={onClose}>← Progression</button><span>ARCHIVE / 04.100</span></header><div className="finale-content"><p className="eyebrow final-phase">{phase}</p><p className="reconstruction-status"><i aria-hidden="true"/>{status}</p><span className="sr-only" aria-live="polite">{readyToReveal ? "Dossier reconstitué. Le message peut être révélé." : ""}</span><div className={`final-photo-stage ${assembled ? "assembled" : ""} ${cleanPhoto ? "clean" : ""} ${flipped ? "flipped" : ""} ${!cleanPhoto ? "reconstructing" : ""}`} style={{ aspectRatio: photoRatio }}><div className="photo-card"><div className="photo-face photo-front"><div className="assembly-grid">{finalPhotoLayout.map((fragmentId, index) => <PhotoFragment key={fragmentId} fragmentId={fragmentId} variant="assembly" className={`assembly-piece piece-${index + 1}`}/>)}</div><div className="reconstruction-scan" aria-hidden="true"/>{cleanPhoto && (available === false ? <div className="final-photo-placeholder">PHOTO FINALE</div> : <Image src={resolvedPhotoSource} alt="Photo finale reconstituée" width={1200} height={800} unoptimized onError={() => setAvailable(false)}/>)}</div><div className="photo-face photo-back"><p>Tu es arrivé au bout du dossier.<br/><br/>Mais il reste une dernière chose à trouver.<br/><br/>Ton cadeau t’attend sous le canapé.</p></div></div></div>{animate && !readyToReveal && <button className="skip-reconstruction" onClick={finishImmediately}>Passer l’animation</button>}{readyToReveal && <button className="return-photo" onClick={() => setFlipped((previous) => !previous)}>{flipped ? "Voir la photo" : "Révéler le message"}</button>}</div></div>;
 }

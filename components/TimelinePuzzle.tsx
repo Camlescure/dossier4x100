@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { isRestoredTimeline, shuffledTimelineEvidence, timelineEvidence } from "@/games/puzzles/timelineEvidence.mjs";
+import { assetPath } from "@/lib/assetPath";
 
 type Evidence = (typeof timelineEvidence)[number];
 
@@ -29,7 +30,7 @@ export function TimelinePuzzle({ onBack, onSolved }: { onBack: () => void; onSol
 }
 
 function EvidenceCard({ evidence, selected = false, compact = false, unavailable = false, onImageError, onSelect }: { evidence: Evidence; selected?: boolean; compact?: boolean; unavailable: boolean; onImageError: () => void; onSelect?: () => void }) {
-  const content = <><div className="evidence-visual">{unavailable ? <span className="evidence-placeholder">{evidence.placeholder}</span> : <Image src={evidence.asset} alt={evidence.title} width={640} height={480} unoptimized onError={onImageError}/>}</div>{evidence.type === "receipt" && <small>RÉSERVATION CONFIRMÉE</small>}{evidence.type === "ticket" && <small>BOARDING PASS</small>}{evidence.type === "phone" && <small>APPEL ENTRANT</small>}</>;
+  const content = <><div className="evidence-visual">{unavailable ? <span className="evidence-placeholder">{evidence.placeholder}</span> : <Image src={assetPath(evidence.asset)} alt={evidence.title} width={640} height={480} unoptimized onError={onImageError}/>}</div>{evidence.type === "receipt" && <small>RÉSERVATION CONFIRMÉE</small>}{evidence.type === "ticket" && <small>BOARDING PASS</small>}{evidence.type === "phone" && <small>APPEL ENTRANT</small>}</>;
   if (compact) return <div className={`evidence-card ${evidence.type} compact`}>{content}</div>;
   return <button className={`evidence-card ${evidence.type} ${selected ? "selected" : ""}`} onClick={onSelect}>{content}</button>;
 }
