@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./final.css";
+import "./intro.css";
 export const metadata: Metadata = { title: "Dossier 4x100", description: "Système de récupération mémorielle" };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="fr"><body>{children}</body></html>; }
