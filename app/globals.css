@@ -29,5 +29,56 @@ header { height:76px; padding:0 21px; display:grid; grid-template-columns:1fr au
 nav { position:absolute;bottom:0;left:0;right:0;height:72px;padding:0 21px 11px;display:flex;gap:23px;align-items:center;border-top:1px solid rgba(217,255,69,.16);background:#10120ef2; } nav button { padding:9px 0;border:0;border-bottom:2px solid transparent;background:none;color:#74796e;font:9px "Courier New",monospace;letter-spacing:.1em;text-transform:uppercase; } nav .active { color:var(--acid);border-color:var(--acid); }
 .back { border:0;background:none;color:#aeb4a2;font:10px "Courier New",monospace;padding:0;margin:0 0 34px;letter-spacing:.08em;text-transform:uppercase; }.puzzle { padding-top:21px; }.puzzle .intro { margin-top:16px; }.puzzle-box { min-height:159px;border:1px solid rgba(217,255,69,.3);background:repeating-linear-gradient(90deg,rgba(217,255,69,.035) 0 1px,transparent 1px 12px),rgba(15,17,13,.75);padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#afb5a8;font-size:13px;line-height:1.65; }.puzzle-box b { color:var(--acid);font:42px "Courier New",monospace;text-shadow:0 0 16px rgba(217,255,69,.5); }.puzzle-box p{max-width:250px}.puzzle label { display:block;margin:26px 0 9px;color:#a5ab9d;font:9px "Courier New",monospace;letter-spacing:.12em;text-transform:uppercase; }.puzzle input { width:100%;height:53px;background:#11130f;border:1px solid #5f6658;color:var(--acid);padding:0 14px;outline:none;font:14px "Courier New",monospace; }.puzzle input:focus{border-color:var(--acid);box-shadow:0 0 0 2px rgba(217,255,69,.1)}.puzzle input::placeholder{color:#596054}.error{height:41px;margin:0;padding-top:9px;color:var(--signal);font-size:11px;line-height:1.45}.success h2{max-width:320px}.success>p:not(.eyebrow){color:#a9afa1;font-size:14px;margin:14px 0 27px}.reveal{width:100%;margin-bottom:31px;padding:20px;border:1px solid var(--acid);background:rgba(217,255,69,.07);display:flex;flex-direction:column;gap:15px;text-align:left}.reveal span{color:#a4ac95;font:9px "Courier New",monospace;letter-spacing:.14em}.reveal strong{color:var(--acid);font:26px "Courier New",monospace;letter-spacing:.08em}.meta{text-align:center;padding-top:18vh}.meta .back{position:absolute;left:21px;top:99px}.meta>b{display:block;color:var(--acid);font:70px "Courier New",monospace;margin-bottom:18px;text-shadow:0 0 20px rgba(217,255,69,.4)}.meta>p{margin:15px auto;color:#a3ab9c;max-width:280px;line-height:1.65;font-size:14px}.meta small{display:block;color:#6e7569;font:11px "Courier New",monospace;margin-top:36px}.modal-bg{position:fixed;inset:0;z-index:4;display:flex;align-items:flex-end;padding:16px;background:rgba(0,0,0,.78);backdrop-filter:blur(5px)}.modal-bg article{position:relative;max-width:508px;width:100%;margin:auto;padding:30px 24px 34px;background:#171a14;border:1px solid var(--acid);box-shadow:7px 7px 0 rgba(217,255,69,.18)}.modal-bg article>button{position:absolute;right:14px;top:10px;border:0;background:none;color:var(--acid);font:27px "Courier New",monospace}.modal-bg strong{display:block;margin:22px 0;color:var(--acid);font:31px "Courier New",monospace;letter-spacing:.08em}.modal-bg p:last-child{color:#adb4a5;font-size:13px;line-height:1.65;margin:0}.reset{position:fixed;right:12px;bottom:10px;z-index:10;border:1px solid #51584c;background:#131510;color:#8f9687;font:9px "Courier New",monospace;padding:7px 9px}.fade{animation:fade .28s ease-out}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@media(min-width:541px){.app-frame{box-shadow:0 0 50px rgba(0,0,0,.35)}}
 
+/* Écrans larges : le mobile reste la référence sous 768 px. */
+@media (min-width:768px) and (hover:hover){
+  .app-shell{display:flex;align-items:stretch;justify-content:center;padding:clamp(24px,4vw,56px);overflow:auto}
+  .app-frame{width:min(100%,1120px);max-width:none;min-height:calc(100dvh - clamp(48px,8vw,112px));border:1px solid rgba(217,255,69,.25);background:linear-gradient(135deg,rgba(217,255,69,.035),transparent 34%),rgba(12,13,11,.82);box-shadow:0 28px 80px rgba(0,0,0,.48),inset 0 0 0 1px rgba(255,255,255,.025)}
+  .app-frame>header{height:82px;padding:0 clamp(34px,4vw,56px)}
+  .app-frame>nav{position:static;flex:0 0 auto;height:74px;padding:0 clamp(34px,4vw,56px);gap:30px}
+  .home,.success{padding:clamp(58px,8vh,92px) 48px 78px}
+  .success .reveal{max-width:520px}
+  .home h1{font-size:clamp(60px,7vw,88px)}
+  .home .intro{max-width:520px;font-size:15px}
+  .content{padding:48px clamp(34px,5vw,70px) 58px}
+  .content>.title{margin-bottom:30px}
+  .content>.next{max-width:650px;margin:36px auto 0}
+  .content.polybius,.audio-puzzle,.map-puzzle{width:min(100%,740px);margin-left:auto;margin-right:auto}
+  .electrical-puzzle{width:min(100%,920px);margin-left:auto;margin-right:auto}
+  .timeline-puzzle{width:min(100%,960px);margin-left:auto;margin-right:auto}
+  .terminal-puzzle{width:min(100%,980px);margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
+  .terminal-puzzle .back,.terminal-puzzle .eyebrow,.terminal-intro{margin-left:0;margin-right:0}
+  .terminal-output{height:min(56dvh,560px);padding:20px;font-size:13px}
+  .terminal-validation{max-width:620px;margin-left:auto;margin-right:auto}
+  .map-display,.map-validation{max-width:570px;margin-left:auto;margin-right:auto}
+  .map-caption{max-width:570px;margin-left:auto;margin-right:auto}
+  .map-overlay{padding:48px}
+  .map-overlay img{max-width:min(78vw,900px)}
+  .polybius .cipher-message,.polybius .polybius-grid,.polybius .hint,.polybius .hint-button,.polybius label,.polybius input,.polybius .error,.polybius>.action{max-width:580px;margin-left:auto;margin-right:auto}
+  .polybius label{margin-top:26px}
+  .polybius>.action{display:flex;width:100%}
+  .modal-bg{align-items:center;padding:32px}
+  .modal-bg article{max-width:650px}
+}
+
+@media (min-width:960px) and (hover:hover){
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+  .grid button{min-height:282px;padding:18px}
+  .grid .photo-fragment-card .photo-fragment{width:min(100%,210px)}
+  .breaker-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+  .breaker{min-height:130px;padding:13px 11px 11px}
+  .maintenance-sheet{padding:22px 24px}
+  .maintenance-sheet dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:30px}
+  .app-frame .timeline-puzzle .archive-zone{padding:18px}
+  .app-frame .timeline-puzzle .evidence-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .app-frame .timeline-puzzle .chronology{max-width:860px;margin-left:auto;margin-right:auto}
+  .app-frame .timeline-puzzle .timeline-slot{min-height:182px;padding:15px 18px 15px 58px}
+  .app-frame .timeline-puzzle .timeline-slot.occupied{padding:0}
+  .app-frame .timeline-puzzle .timeline-slot>i{min-height:150px;padding-left:78px}
+  .app-frame .timeline-puzzle .timeline-slot .evidence-card{min-height:180px;grid-template-columns:188px 1fr;padding:10px 12px 10px 70px}
+  .app-frame .timeline-puzzle .timeline-slot .evidence-card .evidence-visual{height:158px}
+  .app-frame .timeline-puzzle .timeline-slot .evidence-card small{max-width:none;margin-left:20px;font-size:9px}
+  .modal-bg article .photo-fragment{width:min(100%,300px)}
+}
+
 /* Frise d'archives verticale — énigme 06 */
 .timeline-puzzle .chronology{position:relative;margin-top:26px;padding:0 8px}.timeline-puzzle .chronology:before{content:"";position:absolute;top:36px;bottom:27px;left:50%;width:1px;background:linear-gradient(var(--acid),rgba(217,255,69,.12));opacity:.55}.timeline-puzzle .chronology-label{position:relative;margin:0 -8px 16px;padding:0 5px}.timeline-puzzle .chronology-slots{position:relative;display:flex;flex-direction:column;gap:15px}.timeline-puzzle .timeline-slot{width:100%;min-height:148px;padding:12px 14px 12px 43px;border-style:dashed;border-color:rgba(217,255,69,.34);background:linear-gradient(90deg,rgba(217,255,69,.055),rgba(16,18,15,.86) 24%);overflow:visible}.timeline-puzzle .timeline-slot:before{content:"";position:absolute;left:18px;top:50%;width:15px;border-top:1px solid rgba(217,255,69,.55)}.timeline-puzzle .timeline-slot>span{top:12px;left:12px;padding:5px 6px;border:1px solid rgba(217,255,69,.27);background:#11130f;color:var(--acid);font-size:8px}.timeline-puzzle .timeline-slot>i{min-height:122px;justify-content:flex-start;padding-left:60px;color:#777e70;font-size:9px}.timeline-puzzle .timeline-slot.occupied{padding:0;border-style:solid;border-color:rgba(217,255,69,.52);background:#11130f}.timeline-puzzle .timeline-slot.occupied>span{top:9px;left:10px;z-index:2}.timeline-puzzle .timeline-slot .evidence-card{min-height:146px;width:100%;display:grid;grid-template-columns:132px 1fr;grid-template-rows:1fr;align-items:stretch;padding:8px 9px 8px 56px;text-align:left}.timeline-puzzle .timeline-slot .evidence-card .evidence-visual{grid-column:1;aspect-ratio:auto;height:128px}.timeline-puzzle .timeline-slot .evidence-card small{display:block;grid-column:2;align-self:center;margin:0 0 0 15px;max-width:140px;color:#44493f;font-size:8px;line-height:1.5}.timeline-puzzle .timeline-slot .evidence-card.phone{max-width:none;border-radius:0}.timeline-puzzle .timeline-slot .evidence-card.phone small{color:#aab2a1}.timeline-puzzle .timeline-slot .evidence-card.compact{transform:none}.timeline-puzzle .timeline-slot .evidence-card.polaroid{padding-bottom:8px}.timeline-puzzle .timeline-slot .evidence-card.travel{padding-bottom:8px}
