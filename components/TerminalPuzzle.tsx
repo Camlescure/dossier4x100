@@ -35,7 +35,10 @@ function permissionLine(name: string, rootOnly: boolean, type: string) { return 
 export function TerminalPuzzle({ onBack, onSolved }: { onBack: () => void; onSolved: () => void }) {
   const [cwd, setCwd] = useState(home), [isRoot, setIsRoot] = useState(false), [input, setInput] = useState(""), [lines, setLines] = useState<Line[]>([{ prompt: "", command: "", output: "DOSSIER 4X100 terminal [session active]\nType ‘help’ for available commands." }]), [history, setHistory] = useState<string[]>([]), [historyIndex, setHistoryIndex] = useState(-1), [awaitingPassword, setAwaitingPassword] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null), terminalEndRef = useRef<HTMLDivElement>(null), tabCountRef = useRef(0), tabTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => { terminalEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [lines, awaitingPassword]);
+  useEffect(() => {
+    const terminalOutput = terminalEndRef.current?.parentElement;
+    if (terminalOutput instanceof HTMLElement) terminalOutput.scrollTo({ top: terminalOutput.scrollHeight, behavior: "smooth" });
+  }, [lines, awaitingPassword]);
   const addLine = (command: string, output?: string, promptText = prompt(isRoot, cwd)) => setLines((previous) => [...previous, { prompt: promptText, command, output }]);
   const execute = (raw: string) => {
     const command = raw.trim();
@@ -79,7 +82,11 @@ export function TerminalPuzzle({ onBack, onSolved }: { onBack: () => void; onSol
     }
     addLine(command, `bash: ${base}: command not found`);
   };
-  const submit = () => { execute(input); setInput(""); };
+  const submit = () => {
+    execute(input);
+    setInput("");
+    window.requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
+  };
   const autocomplete = () => {
     if (awaitingPassword) return;
     const [command = "", ...parts] = input.split(/\s+/); const fragment = parts.join(" ");
@@ -91,7 +98,7 @@ export function TerminalPuzzle({ onBack, onSolved }: { onBack: () => void; onSol
     if (candidates.length > 1 && tabCountRef.current >= 2) { setLines((previous) => [...previous, { prompt: "", command: "", output: candidates.join("  ") }]); tabCountRef.current = 0; return; }
     if (candidates.length === 0) tabCountRef.current = 0;
   };
-  return <div className="content terminal-puzzle fade"><button className="back" onClick={onBack}>← Retour</button><p className="eyebrow">ÉNIGME 02 — ACCÈS REFUSÉ</p><p className="terminal-intro">Un environnement local a été récupéré. Son contenu reste à explorer.</p><section className="terminal-window" onClick={() => inputRef.current?.focus()} aria-label="Terminal Linux simulé"><div className="terminal-titlebar"><span>victor@dossier4x100</span><i>● ● ●</i></div><div className="terminal-output">{lines.map((line, index) => <div className="terminal-line" key={`${line.command}-${index}`}>{line.command && <div><span className={line.prompt.endsWith("#") ? "root-prompt" : "user-prompt"}>{line.prompt}</span> <span>{line.command}</span></div>}{line.output !== undefined && line.output !== "" && <pre>{line.output}</pre>}</div>)}<div className="terminal-entry"><span className={isRoot ? "root-prompt" : "user-prompt"}>{awaitingPassword ? "[sudo] password for victor:" : prompt(isRoot, cwd)}</span><input ref={inputRef} type={awaitingPassword ? "password" : "text"} autoCapitalize="none" autoCorrect="off" autoComplete="off" spellCheck={false} value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); event.stopPropagation(); submit(); window.requestAnimationFrame(() => inputRef.current?.focus()); return; } if (event.key === "Tab") { event.preventDefault(); autocomplete(); } if (event.key === "ArrowUp") { event.preventDefault(); const next = Math.min(historyIndex + 1, history.length - 1); if (next >= 0) { setHistoryIndex(next); setInput(history[history.length - 1 - next]); } } if (event.key === "ArrowDown") { event.preventDefault(); const next = historyIndex - 1; setHistoryIndex(next); setInput(next >= 0 ? history[history.length - 1 - next] : ""); } }} aria-label="Commande terminal" /></div><div ref={terminalEndRef}/></div></section><TerminalValidation onSolved={onSolved}/></div>;
+  return <div className="content terminal-puzzle fade"><button className="back" onClick={onBack}>← Retour</button><p className="eyebrow">ÉNIGME 02 — ACCÈS REFUSÉ</p><p className="terminal-intro">Un environnement local a été récupéré. Son contenu reste à explorer.</p><section className="terminal-window" onClick={() => inputRef.current?.focus({ preventScroll: true })} aria-label="Terminal Linux simulé"><div className="terminal-titlebar"><span>victor@dossier4x100</span><i>● ● ●</i></div><div className="terminal-output">{lines.map((line, index) => <div className="terminal-line" key={`${line.command}-${index}`}>{line.command && <div><span className={line.prompt.endsWith("#") ? "root-prompt" : "user-prompt"}>{line.prompt}</span> <span>{line.command}</span></div>}{line.output !== undefined && line.output !== "" && <pre>{line.output}</pre>}</div>)}<form className="terminal-entry" onSubmit={(event) => { event.preventDefault(); submit(); }}><span className={isRoot ? "root-prompt" : "user-prompt"}>{awaitingPassword ? "[sudo] password for victor:" : prompt(isRoot, cwd)}</span><input ref={inputRef} type={awaitingPassword ? "password" : "text"} autoCapitalize="none" autoCorrect="off" autoComplete="off" spellCheck={false} enterKeyHint="send" value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Tab") { event.preventDefault(); autocomplete(); } if (event.key === "ArrowUp") { event.preventDefault(); const next = Math.min(historyIndex + 1, history.length - 1); if (next >= 0) { setHistoryIndex(next); setInput(history[history.length - 1 - next]); } } if (event.key === "ArrowDown") { event.preventDefault(); const next = historyIndex - 1; setHistoryIndex(next); setInput(next >= 0 ? history[history.length - 1 - next] : ""); } }} aria-label="Commande terminal" /></form><div ref={terminalEndRef}/></div></section><TerminalValidation onSolved={onSolved}/></div>;
 }
 
 function TerminalValidation({ onSolved }: { onSolved: () => void }) {
